@@ -53,27 +53,27 @@ void loop()
         case '0':
           //handle '1'
           servo_9.write(1);
-          Serial.print("0/n");
+          Serial.print("0\n");
           break;
         case '1':
           //handle '1'
           servo_9.write(60);
-          Serial.print("1/n");
+          Serial.print("1\n");
           break;
         case '2':
           //hanle '2'
           servo_9.write(90);
-          Serial.print("2/n");
+          Serial.print("2\n");
           break;
         case '3':
           //hanle '3'
           servo_9.write(115);
-          Serial.print("3/n");
+          Serial.print("3\n");
           break;
         case '4':
           //hanle '4'
           servo_9.write(180);
-          Serial.print("4/n");
+          Serial.print("4\n");
           break;
         case '5':
           //hanle '5'
@@ -86,7 +86,7 @@ void loop()
                 if (incomingData == '0') break;
               }
           }
-          Serial.print("5/n");
+          Serial.print("5\n");
           break;
 
         default:

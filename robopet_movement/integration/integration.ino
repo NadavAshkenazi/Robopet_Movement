@@ -5,7 +5,7 @@
 #include <Wire.h>
 #include <Adafruit_PWMServoDriver.h>
 
-#define WAIT 1000
+#define WAIT 5000
 
 #define MIN(X, Y) (((X) < (Y)) ? (X) : (Y))
 #define MAX(X, Y) (((X) > (Y)) ? (X) : (Y))
@@ -20,7 +20,7 @@
 //motors consts
 #define MOTOR_OFF 0
 #define MOTOR_MAX_SPEED 255
-#define MOTOR_INIT_SPEED 50
+#define MOTOR_INIT_SPEED 100
 
 
 
@@ -53,6 +53,23 @@ int motorSpeedR = 0;
 
 int incomingByte = 0;
 
+/* ========= UltraSonicFuncrions ========== */
+int cm = 0;
+
+long readUltrasonicDistance(int triggerPin, int echoPin)
+{
+  pinMode(triggerPin, OUTPUT);  // Clear the trigger
+  digitalWrite(triggerPin, LOW);
+  delayMicroseconds(2);
+  // Sets the trigger pin to HIGH state for 10 microseconds
+  digitalWrite(triggerPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(triggerPin, LOW);
+  pinMode(echoPin, INPUT);
+  // Reads the echo pin, and returns the sound wave travel time in microseconds
+  return pulseIn(echoPin, HIGH);
+}
+
 /*
  * gets angle in degree and returns the pulse width
  */
@@ -60,25 +77,37 @@ int servo_angleToPulse(int ang){
    int pulse = map(ang,0, 180, SERVOMIN,SERVOMAX);// map angle of 0 to 180 to Servo min and Servo max 
    return pulse;
 }
+/* ========= Camera functcions Functions ========== */
+
+void camera_scan(){
+  for( int angle =20; angle<181; angle +=20){
+    delay(500);
+    pwm.setPWM(14, 0, servo_angleToPulse(angle) );
+    for( int angle =20; angle<91; angle +=20){
+      delay(500);
+      pwm.setPWM(15, 0, servo_angleToPulse(angle) );
+    }
+  }
+
+  delay(1000);
+}
+
 
 /* ========= Axis Functions ========== */
 
 void axis_turnRight(){
   pwm.setPWM(axisPin, 0, servo_angleToPulse(HARD_RIGHT));
   Serial.print("Axis set to ");Serial.print(HARD_RIGHT);
-  delay(WAIT);
 }
 
 void axis_turnStraight(){
-  pwm.setPWM(axisPin, 0, servo_angleToPulse(STRAIGHT));
-  Serial.print("Axis set to ");Serial.print(STRAIGHT);
-  delay(WAIT);
+  pwm.setPWM(axisPin, 0, servo_angleToPulse(STRAIGHT));Serial.print("\n");
+  Serial.print("Axis set to ");Serial.print(STRAIGHT);Serial.print("\n");
 }
 
 void axis_turnLeft(){
-  pwm.setPWM(axisPin, 0, servo_angleToPulse(HARD_LEFT));
-  Serial.print("Axis set to ");Serial.print(HARD_LEFT);
-  delay(WAIT);
+  pwm.setPWM(axisPin, 0, servo_angleToPulse(HARD_LEFT));Serial.print("\n");
+  Serial.print("Axis set to ");Serial.print(HARD_LEFT);Serial.print("\n");
 }
 
 /* ========= Motor Functions ========== */
@@ -86,7 +115,7 @@ void axis_turnLeft(){
 void motor_setLSpeed(int speed){
   motorSpeedL = speed;
   analogWrite(ENA, motorSpeedL); //ENA pin
-  Serial.print("Left motor set to ");Serial.print(motorSpeedL);
+  Serial.print("Left motor set to ");Serial.print(motorSpeedL);Serial.print("\n");
 }
 
 int motor_getLSpeed(){
@@ -96,7 +125,7 @@ int motor_getLSpeed(){
 void motor_setRSpeed(int speed){
   motorSpeedR = speed;
   analogWrite(ENB, motorSpeedR); //ENA pin
-  Serial.print("Right motor set to ");Serial.print(motorSpeedR);
+  Serial.print("Right motor set to ");Serial.print(motorSpeedR);Serial.print("\n");
 }
 
 int motor_getRSpeed(){
@@ -111,25 +140,25 @@ int motor_setOverallSpeed(int speed){
 void motor_lForward(){
  digitalWrite(motor1pin1, HIGH);
  digitalWrite(motor1pin2, LOW);
- Serial.print("Left motor forward");
+ Serial.print("Left motor forward\n");
 }
 
 void motor_rForward(){
  digitalWrite(motor2pin1, HIGH);
  digitalWrite(motor2pin2, LOW);
- Serial.print("Right motor forward");
+ Serial.print("Right motor forward\n");
 }
 
 void motor_lBackward(){
  digitalWrite(motor1pin1, LOW);
  digitalWrite(motor1pin2, HIGH);
- Serial.print("Left motor backward");
+ Serial.print("Left motor backward\n");
 }
 
 void motor_rBackward(){
  digitalWrite(motor2pin1, LOW);
  digitalWrite(motor2pin2, HIGH);
- Serial.print("Right motor backward");
+ Serial.print("Right motor backward\n");
 }
 
 void motor_turnLeft(){
@@ -149,8 +178,8 @@ void motor_straight(){
 }
 
 void motor_reverse(){
- motor_lForward();
- motor_rForward();
+ motor_lBackward();
+ motor_rBackward();
 }
 
 
@@ -168,37 +197,112 @@ void robot_setSpeed(int speed){
   }
 }
 
+int robot_getSpeed(){
+  return MAX(motor_getLSpeed(), motor_getRSpeed());
+}
+
 void robot_driveForwards(){
+  Serial.print("=========================\n");
+  Serial.print("---> robot->drive_forwards\n");
+  Serial.print("backward\n");
   axis_turnStraight();
-  motor_motor_straight();
+  motor_straight();
+  Serial.print("=========================\n");
 }
 
 void robot_driveReverse(){
+  Serial.print("=========================\n");
+  Serial.print("---> robot->drive_Reverse\n");
   axis_turnStraight();
   motor_reverse();
+  Serial.print("=========================\n");
 }
 
 void robot_turnLeft(){
+  Serial.print("=========================\n");
+  Serial.print("---> robot->turn_Left\n");
   axis_turnLeft();
-  motor_turnLeft();
+//  motor_turnLeft();
+  Serial.print("=========================\n");
 }
 
 void robot_turnRight(){
+  Serial.print("=========================\n");
+  Serial.print("---> robot->turn_Right\n");
   axis_turnRight();
-  motor_turnRight();
+//  motor_turnRight();
+  Serial.print("=========================\n");
 }
 
 void robot_stop(){
-  for (int i = MAX(motorSpeedL,motorSpeedR); i >= MOTOR_OFF; i--){
-    robot_setSpeed(i);
-  }
-  Serial.print("Robot stopped");
+  Serial.print("=========================\n");
+  Serial.print("---> robot->stop\n");
+//  for (int i = MAX(motorSpeedL,motorSpeedR); i >= MOTOR_OFF; i--){
+//    robot_setSpeed(i);
+//    delay(10);
+//  }
+  robot_setSpeed(MOTOR_OFF);
+  Serial.print("Robot stopped\n");
+  Serial.print("=========================\n");
 }
 
 void robot_drive(){
-  if (MAX(motorSpeedL,motorSpeedR) <= MOTOR_OFF){
-    robot_setSpeed(MOTOR_INIT_SPEED);
-  }
+  robot_setSpeed(MOTOR_INIT_SPEED);
+  robot_driveForwards();
+}
+
+void robot_parceCommand(){
+if(Serial.available() > 0)  {
+    int incomingData= Serial.read(); // can be -1 if read error
+    switch(incomingData) { 
+      case 'D':
+        //handle 'D'
+        robot_drive();
+        break;
+      case 'S':
+        //handle 'S'
+        robot_stop();
+        break;
+      case 'L':
+        //hanle 'L'
+        robot_turnLeft();
+        break;
+      case 'R':
+        //hanle 'R'
+        robot_turnRight();
+        break;
+      case 'F':
+        //hanle 'F'
+        robot_driveForwards();
+        break;
+      case 'B':
+        //hanle 'B'
+        robot_driveReverse();
+        break;
+      case 'C':
+        //hanle 'C'
+        camera_scan();
+        break;
+      
+//      case '5':
+//        //hanle '5'
+//        servo_9.write(0);
+//        for (int pos = 0; pos <= 180; pos+=5){
+//            servo_9.write(pos);
+//            delay(500);
+//            if(Serial.available() > 0){
+//              int incomingData = Serial.read();
+//              if (incomingData == '0') break;
+//            }
+//        }
+//        Serial.print("5/n");
+//        break;
+
+      default:
+        Serial.print("unknown data: ");Serial.print(incomingData);Serial.print("\n");
+      break;
+    }
+ }
 }
 
 void setup()
@@ -220,72 +324,29 @@ void setup()
 }
 void loop()
 {
-  motor_setOverallSpeed(100);
-  
-  motor_lBackward();
-  motor_rBackward();
-  delay(WAIT);
-  
-  axis_turnStraight();
-  axis_turnRight();
-  axis_turnLeft();
-
-  motor_lForward();
-  motor_rForward();
-  delay(WAIT);
-
-  axis_turnStraight();
-  axis_turnRight();
-  axis_turnLeft();
-
-  
-//    if(Serial.available() > 0)  {
-//      int incomingData= Serial.read(); // can be -1 if read error
-//      switch(incomingData) { 
-//        case '0':
-//          //handle '1'
-//          servo_9.write(1);
-//          Serial.print("0/n");
-//          break;
-//        case '1':
-//          //handle '1'
-//          servo_9.write(60);
-//          Serial.print("1/n");
-//          break;
-//        case '2':
-//          //hanle '2'
-//          servo_9.write(90);
-//          Serial.print("2/n");
-//          break;
-//        case '3':
-//          //hanle '3'
-//          servo_9.write(115);
-//          Serial.print("3/n");
-//          break;
-//        case '4':
-//          //hanle '4'
-//          servo_9.write(180);
-//          Serial.print("4/n");
-//          break;
-//        case '5':
-//          //hanle '5'
-//          servo_9.write(0);
-//          for (int pos = 0; pos <= 180; pos+=5){
-//              servo_9.write(pos);
-//              delay(500);
-//              if(Serial.available() > 0){
-//                int incomingData = Serial.read();
-//                if (incomingData == '0') break;
-//              }
-//          }
-//          Serial.print("5/n");
-//          break;
-//
-//        default:
-//        // handle unwanted input 
-//        break;
-//      }
-//   }
+//  robot_drive();
+//  delay(WAIT);
+//  robot_setSpeed(100);
+//  delay(WAIT);
+//  robot_turnLeft();
+//  delay(WAIT);
+//  robot_driveReverse();
+//  delay(WAIT);
+//  robot_turnRight();
+//  delay(WAIT);
+//  robot_driveForwards();
+//  robot_stop();
+//  delay(WAIT);
+  cm = 0.01723 * readUltrasonicDistance(8, 7);
+  if(cm >= 20){
+    robot_parceCommand();
+  }
+  else {
+    if (robot_getSpeed() != 0){
+        robot_stop();
+        Serial.print("cm = ");Serial.print(cm);Serial.print("\n");
+    }
+  }
 }
 
 
