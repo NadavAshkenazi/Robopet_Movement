@@ -6,6 +6,10 @@
 #define UNTITLED_MOTOR_H
 #include "Arduino.h"
 
+//motors consts
+#define MOTOR_OFF 0
+#define MOTOR_MAX_SPEED 255
+
 class Motor {
 public:
         int pin1;

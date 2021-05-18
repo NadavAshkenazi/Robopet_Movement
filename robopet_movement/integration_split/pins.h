@@ -5,6 +5,9 @@
 #ifndef UNTITLED_PINS_H
 #define UNTITLED_PINS_H
 
+#define MAX(X, Y) (((X) > (Y)) ? (X) : (Y))
+#define MIN(X, Y) (((X) < (Y)) ? (X) : (Y))
+
 //PCA9685:
 #define AXIS_PIN 0
 #define CAMERAX_PIN 14

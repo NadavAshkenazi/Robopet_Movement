@@ -4,6 +4,9 @@
 #include "motor.h"
 
 void Motor::motor_setSpeed(int speed) {
+    if (speed > MOTOR_MAX_SPEED) speed = 255;
+    if (speed < MOTOR_OFF) speed = 0;
+    
     motor_speed = speed;
     analogWrite(enable, motor_speed);
     Serial.print(name);Serial.print(" motor set to ");Serial.println(motor_speed);

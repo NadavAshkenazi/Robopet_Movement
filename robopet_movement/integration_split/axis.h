@@ -14,11 +14,12 @@
 
 //axis consts
 #define HARD_LEFT 60
-#define HARD_RIGHT 115
+#define HARD_RIGHT 120
 #define STRAIGHT 90
 
 
 void axis_turnRight(Adafruit_PWMServoDriver pwm);
 void axis_turnStraight(Adafruit_PWMServoDriver pwm);
 void axis_turnLeft(Adafruit_PWMServoDriver pwm);
+void axis_turn(Adafruit_PWMServoDriver pwm, int angle);
 #endif //UNTITLED_AXIS_H
