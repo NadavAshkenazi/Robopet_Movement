@@ -68,7 +68,7 @@ void robot_parceCommand(){
 //    Serial.println("done");
  }
 }
-
+                               
 void setup()
 {
   Serial.begin(9600); // opens serial port, sets data rate to 9600 bps
@@ -88,12 +88,12 @@ void setup()
 }
 void loop()
 {
-  robot.setSpeed(200);
+  robot.setSpeed(255);
   delay(WAIT);
   robot.driveForward();
-//  delay(WAIT);
-//  robot.turnLeft();
-//  delay(WAIT);
+  delay(WAIT);
+  robot.turnLeft();
+  delay(WAIT);
   robot.driveBackward();
   delay(WAIT);
   robot.turnRight();
@@ -101,7 +101,7 @@ void loop()
   robot.driveForward();
   robot.stop();
   delay(WAIT);
-//  Serial.println("in loop");
+  Serial.println("in loop");
 //  cm = 0.01723 * ultrasonicDistance_read(8, 7);
 //  if(cm >= 20){
 //    robot_parceCommand();

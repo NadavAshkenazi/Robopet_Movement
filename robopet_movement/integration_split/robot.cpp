@@ -4,7 +4,6 @@
 
 #include "robot.h"
 #include "axis.h"
-#include "camera.h"
 
 
 void Robot::setSpeed(int speed) {
@@ -72,5 +71,9 @@ void Robot::stop() {
 }
 
 void Robot::scan() {
-    camera_scan(pwm);
+ //    camera_scan(pwm);
+      Serial.println("=========================");
+    Serial.println("---> robot->scan");
+    camera.scan();
+    Serial.println("=========================");
 }
