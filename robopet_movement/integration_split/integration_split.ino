@@ -10,6 +10,7 @@
 #include "pins.h"
 #include "axis.h"
 #include "robopet_UltraSonic.h"
+#include "motor.h"
 
 String incoming = "";   // for incoming serial string data
 String command[] = {"0", "0", "0"};
@@ -28,7 +29,8 @@ String command[] = {"0", "0", "0"};
 
 //PCA9685:
 Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver(); // PCA9685 interface with the default address 0x40
-
+Motor motorL = Motor(MOTOR1_PIN1, MOTOR1_PIN2, ENA, "Left");
+Motor motorR = Motor(MOTOR2_PIN1, MOTOR2_PIN2, ENB, "Right");
 
 //motorSpeed
 
@@ -38,74 +40,82 @@ int motorSpeedR = 0;
 
 /* ========= Motor Functions ========== */
 
-void motor_setLSpeed(int speed){
-  motorSpeedL = speed;
-  analogWrite(ENA, motorSpeedL); //ENA pin
-  Serial.print("Left motor set to ");Serial.println(motorSpeedL);
-}
+//void motor_setLSpeed(int speed){
+//  motorSpeedL = speed;
+//  analogWrite(ENA, motorSpeedL); //ENA pin
+//  Serial.print("Left motor set to ");Serial.println(motorSpeedL);
+//}
+//
+//int motor_getLSpeed(){
+//  return motorSpeedL;
+//}
 
-int motor_getLSpeed(){
-  return motorSpeedL;
-}
-
-void motor_setRSpeed(int speed){
-  motorSpeedR = speed;
-  analogWrite(ENB, motorSpeedR); //ENA pin
-  Serial.print("Right motor set to ");Serial.println(motorSpeedR);
-}
-
-int motor_getRSpeed(){
-  return motorSpeedR;
-}
-
+//void motor_setRSpeed(int speed){
+//  motorSpeedR = speed;
+//  analogWrite(ENB, motorSpeedR); //ENA pin
+//  Serial.print("Right motor set to ");Serial.println(motorSpeedR);
+//}
+//
+//int motor_getRSpeed(){
+//  return motorSpeedR;
+//}
+//
 int motor_setOverallSpeed(int speed){
-  motor_setLSpeed(speed);
-  motor_setRSpeed(speed);
+  motorL.motor_setSpeed(speed);
+  motorR.motor_setSpeed(speed);
 }
-
-void motor_lForward(){
- digitalWrite(MOTOR1_PIN1, HIGH);
- digitalWrite(MOTOR1_PIN2, LOW);
- Serial.println("Left motor forward");
-}
-
-void motor_rForward(){
- digitalWrite(MOTOR2_PIN1, HIGH);
- digitalWrite(MOTOR2_PIN2, LOW);
- Serial.println("Right motor forward");
-}
-
-void motor_lBackward(){
- digitalWrite(MOTOR1_PIN1, LOW);
- digitalWrite(MOTOR1_PIN2, HIGH);
- Serial.println("Left motor backward");
-}
-
-void motor_rBackward(){
- digitalWrite(MOTOR2_PIN1, LOW);
- digitalWrite(MOTOR2_PIN2, HIGH);
- Serial.println("Right motor backward");
-}
+//
+//void motor_lForward(){
+// digitalWrite(MOTOR1_PIN1, HIGH);
+// digitalWrite(MOTOR1_PIN2, LOW);
+// Serial.println("Left motor forward");
+//}
+//
+//void motor_rForward(){
+// digitalWrite(MOTOR2_PIN1, HIGH);
+// digitalWrite(MOTOR2_PIN2, LOW);
+// Serial.println("Right motor forward");
+//}
+//
+//void motor_lBackward(){
+// digitalWrite(MOTOR1_PIN1, LOW);
+// digitalWrite(MOTOR1_PIN2, HIGH);
+// Serial.println("Left motor backward");
+//}
+//
+//void motor_rBackward(){
+// digitalWrite(MOTOR2_PIN1, LOW);
+// digitalWrite(MOTOR2_PIN2, HIGH);
+// Serial.println("Right motor backward");
+//}
 
 void motor_turnLeft(){
- motor_lForward();
- motor_rBackward();
+// motor_lForward();
+// motor_rBackward();
+  motorL.motor_Forward();
+  motorR.motor_Backward();
 }
 
 
 void motor_turnRight(){
- motor_lBackward();
- motor_rForward();
+// motor_lBackward();
+// motor_rForward();
+  motorL.motor_Backward();
+  motorR.motor_Forward();
 }
 
 void motor_straight(){
- motor_lForward();
- motor_rForward();
+// motor_lForward();
+// motor_rForward();
+  motorL.motor_Forward();
+  motorR.motor_Forward();
 }
 
 void motor_reverse(){
- motor_lBackward();
- motor_rBackward();
+// motor_lBackward();
+// motor_rBackward();
+  motorL.motor_Backward();
+  motorR.motor_Backward();
 }
 
 
@@ -124,7 +134,7 @@ void robot_setSpeed(int speed){
 }
 
 int robot_getSpeed(){
-  return MAX(motor_getLSpeed(), motor_getRSpeed());
+  return MAX(motorL.motor_getSpeed(), motorR.motor_getSpeed());
 }
 
 void robot_driveForwards(){

@@ -6,7 +6,7 @@
 #define UNTITLED_MOTOR_H
 #include "Arduino.h"
 
-Class Motor {
+class Motor {
 public:
         int pin1;
         int pin2;
@@ -15,7 +15,7 @@ public:
         String name;
 
         Motor(int p1, int p2, int en, String name) : pin1(p1), pin2(p2),
-        enable(p3), motor_speed(0), name(name) {};
+        enable(en), motor_speed(0), name(name) {};
 
         void motor_setSpeed(int speed);
         int motor_getSpeed();
