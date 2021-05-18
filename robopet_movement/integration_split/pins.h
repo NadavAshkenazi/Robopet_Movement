@@ -1,0 +1,21 @@
+//
+// Created by Nadavash on 18/05/2021.
+//
+
+#ifndef UNTITLED_PINS_H
+#define UNTITLED_PINS_H
+
+//PCA9685:
+#define AXIS_PIN 0
+#define CAMERAX_PIN 14
+#define CAMERAY_PIN 15
+
+//pins
+#define MOTOR1_PIN1 2
+#define MOTOR1_PIN2 3
+#define ENA 9
+#define MOTOR2_PIN1 4
+#define MOTOR2_PIN2 5
+#define ENB 10
+
+#endif //UNTITLED_PINS_H

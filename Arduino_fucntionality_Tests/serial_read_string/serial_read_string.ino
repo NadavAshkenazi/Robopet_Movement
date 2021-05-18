@@ -1,29 +1,7 @@
+#include "parceCommands.h"
 String incoming = "";   // for incoming serial string data
 
-
-String command[] = {"", "", ""};
-
-void splitCommand(String incoming){
-  Serial.println("in split");
-  String temp = "";
-  int wordIndex = 0;
-  for (int i = 0; i< incoming.length(); i++){
-        Serial.println(incoming[i]);
-        if(incoming[i] == ' '){
-          command[wordIndex] = temp;
-          Serial.print("command is: ");Serial.println(command[wordIndex]);
-          temp = "";
-          wordIndex+=1;
-        }
-        else{
-          temp = temp + incoming[i];
-        }
-      }
-  command[wordIndex] = temp;
-  Serial.print("command is: ");Serial.println(command[wordIndex]);
-  temp = "";
-}
-
+String command[] = {"0", "0", "0"};
 
 void setup() {
         Serial.begin(9600);     // opens serial port, sets data rate to 9600 bps
@@ -36,7 +14,7 @@ void loop() {
     incoming = Serial.readString();
     // say what you got:
     Serial.println(incoming); 
-    splitCommand(incoming);
+    splitCommand(incoming, command);
     if (command[0] == "demo") {
       //demo routine  
       Serial.println("you started the demo routine");
@@ -57,13 +35,12 @@ void loop() {
       //junk
       Serial.println("something else");
 //      Serial.println(incoming);
-      splitCommand(incoming);
+      splitCommand(incoming, command);
       for (int i = 0; i<3; i++){
         Serial.print("command");Serial.print(i);Serial.print(" ---> ");Serial.println(command[i]);
       }
       incoming = "";
-      
     } 
     Serial.flush(); 
-  }  
+  }
 }
