@@ -177,16 +177,6 @@ void Robot::spinRightForward(int quarters){
     this->turnStraight();
 }
 
-
-
-
-
-
-
-
-
-
-
 void Robot::parceCommand() {
     if(Serial.available() > 0)  {
         // read the incoming:

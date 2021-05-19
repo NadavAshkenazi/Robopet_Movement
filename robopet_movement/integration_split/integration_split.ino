@@ -54,29 +54,12 @@ void loop()
 //  delay(WAIT);
 //  if(robot.getDist(FRONT) <= 50){
 //    Serial.print("distance is: ");Serial.println(robot.getDist(FRONT));
-//    int speed = robot.getSpeed();
-//    robot.stop();
-//    robot.driveBackward();
-//    robot.setSpeed(255);
-//    delay(100);
-//    robot.turnLeft();
-//    robot.motorsTurnLeftBackward();
-//    delay(1000);
-//    robot.setSpeed(speed);
-//    robot.turnStraight();
+//    robot.spinLeftBackward(2);
 //  }
 //  if(robot.getDist(BACK) <= 50){
 //    Serial.print("distance is: ");Serial.println(robot.getDist(BACK));
 //    int speed = robot.getSpeed();
-//    robot.stop();
-//    robot.driveForward();
-//    robot.setSpeed(255);
-//    delay(100);
-//    robot.turnLeft();
-//    robot.motorsTurnLeftForward();
-//    delay(1000);
-//    robot.setSpeed(speed);
-//    robot.turnStraight();
+//    robot.spinLeftForward(2);
 //  }
    robot.parceCommand();
 //   Serial.print("distance is: ");Serial.println(ultrasonicDistance_read(13, 12));

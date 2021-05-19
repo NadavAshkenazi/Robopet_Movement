@@ -78,7 +78,7 @@ void Camera::scan(){
             // read the incoming:
              String incoming = Serial.readString();
              Serial.println(incoming);
-             if (incoming == "cam_stopscan"){
+             if (incoming == "cam_stop"){
                 toBreak = true;
                 break;
              }
