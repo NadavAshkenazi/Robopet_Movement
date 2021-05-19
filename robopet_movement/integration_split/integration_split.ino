@@ -49,7 +49,7 @@ void loop()
 //  delay(WAIT);
 //  robot.turnRight();
 //  delay(WAIT);
-  robot.driveForward();
+//  robot.driveForward();
 //  robot.stop();
 //  delay(WAIT);
 //  if(robot.getDist(FRONT) <= 50){
@@ -78,7 +78,7 @@ void loop()
 //    robot.setSpeed(speed);
 //    robot.turnStraight();
 //  }
-//   robot.parceCommand();
+   robot.parceCommand();
 //   Serial.print("distance is: ");Serial.println(ultrasonicDistance_read(13, 12));
 }
 

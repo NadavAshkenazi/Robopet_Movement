@@ -125,7 +125,9 @@ void Robot::spinLeftBackward(int quarters){
     delay(100);
     this->turnLeft();
     this->motorsTurnLeftBackward();
+    Serial.print("waiting "); Serial.println(SEC*quarters);
     delay(SEC*quarters);
+    this->stop();
     this->setSpeed(speed);
     this->turnStraight();
 }
@@ -138,7 +140,9 @@ void Robot::spinLeftForward(int quarters){
     delay(100);
     this->turnLeft();
     this->motorsTurnLeftForward();
+    Serial.print("waiting "); Serial.println(SEC*quarters);
     delay(SEC*quarters);
+    this->stop();
     this->setSpeed(speed);
     this->turnStraight();
 }
@@ -151,7 +155,9 @@ void Robot::spinRightBackward(int quarters){
     delay(100);
     this->turnRight();
     this->motorsTurnRightBackward();
+    Serial.print("waiting "); Serial.println(SEC*quarters);
     delay(SEC*quarters);
+    this->stop();
     this->setSpeed(speed);
     this->turnStraight();
 }
@@ -164,7 +170,9 @@ void Robot::spinRightForward(int quarters){
     delay(100);
     this->turnRight();
     this->motorsTurnRightForward();
+    Serial.print("waiting "); Serial.println(SEC*quarters);
     delay(SEC*quarters);
+    this->stop();
     this->setSpeed(speed);
     this->turnStraight();
 }
@@ -239,6 +247,30 @@ void Robot::parceCommand() {
           Serial.print("distance is: ");Serial.println(this->getDist(BACK));
         }
       }
+
+      else if (command[0] == "cam_setY"){
+       char buf[command[1].length()+1];
+       command[1].toCharArray(buf, command[1].length()+1);
+       this->cam_setY(atoi(buf));
+      }
+
+      else if (command[0] == "spin"){        
+       char buf[command[3].length()+1];
+       command[3].toCharArray(buf, command[3].length()+1);  
+       if (command[1] == "--left"){
+          if (command[2] == "--front")
+             spinLeftForward(atoi(buf));
+          else if (command[2] == "--back")
+             spinLeftBackward(atoi(buf));
+       }
+       else if (command[1] == "--right"){
+          if (command[2] == "--front")
+             spinRightForward(atoi(buf));
+          else if (command[2] == "--back")
+             spinRightBackward(atoi(buf));
+       }
+      }
+      
       else {
         Serial.print("unknown data: ");Serial.println(incoming);
       }
