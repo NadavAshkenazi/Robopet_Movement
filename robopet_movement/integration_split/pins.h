@@ -16,9 +16,11 @@
 //pins
 #define MOTOR1_PIN1 2
 #define MOTOR1_PIN2 3
-#define ENA 9
+#define ENA_PIN 9
 #define MOTOR2_PIN1 4
 #define MOTOR2_PIN2 5
-#define ENB 10
+#define ENB_PIN 10
+#define TRIGGER_PIN 8
+#define ECHO_PIN 7
 
 #endif //UNTITLED_PINS_H

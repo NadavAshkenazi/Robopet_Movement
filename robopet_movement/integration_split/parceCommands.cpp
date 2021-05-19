@@ -5,14 +5,14 @@
 #include "parceCommands.h"
 
 void splitCommand(String incoming, String* command){
-    Serial.println("in split");
+//    Serial.println("in split");
     String temp = "";
     int wordIndex = 0;
     for (int i = 0; i< incoming.length(); i++){
-        Serial.println(incoming[i]);
+//        Serial.println(incoming[i]);
         if(incoming[i] == ' '){
             command[wordIndex] = temp;
-            Serial.print("command is: ");Serial.println(command[wordIndex]);
+//            Serial.print("command is: ");Serial.println(command[wordIndex]);
             temp = "";
             wordIndex+=1;
         }
@@ -22,7 +22,7 @@ void splitCommand(String incoming, String* command){
     }
     if (wordIndex < 3){
         command[wordIndex] = temp;
-        Serial.print("command is: ");Serial.println(command[wordIndex]);
+//        Serial.print("command is: ");Serial.println(command[wordIndex]);
     }
     temp = "";
 }

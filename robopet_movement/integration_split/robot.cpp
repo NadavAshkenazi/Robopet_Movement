@@ -4,6 +4,8 @@
 
 #include "robot.h"
 #include "axis.h"
+#include "robopet_UltraSonic.h"
+#include "parceCommands.h"
 
 
 void Robot::setSpeed(int speed) {
@@ -17,7 +19,7 @@ int Robot::getSpeed() {
 
 void Robot::driveForward() {
     Serial.println("=========================");
-    Serial.print("---> robot->drive_forwards");
+    Serial.println("---> robot->drive_forwards");
 //    axis_turnStraight(pwm);
     motorL.motor_Forward();
     motorR.motor_Forward();
@@ -26,7 +28,7 @@ void Robot::driveForward() {
 
 void Robot::driveBackward() {
     Serial.println("=========================");
-    Serial.print("---> robot->drive_backwards");
+    Serial.println("---> robot->drive_backwards");
 //    axis_turnStraight(pwm);
     motorL.motor_Backward();
     motorR.motor_Backward();
@@ -76,4 +78,78 @@ void Robot::scan() {
     Serial.println("---> robot->scan");
     camera.scan();
     Serial.println("=========================");
+}
+
+void Robot::cam_setX(int angle) {
+    Serial.println("=========================");
+    Serial.println("---> robot->cam_setX");
+    camera.setAngleX(angle);
+    Serial.println("=========================");
+}
+
+void Robot::cam_setY(int angle) {
+    Serial.println("=========================");
+    Serial.println("---> robot->cam_setX");
+    camera.setAngleY(angle);
+    Serial.println("=========================");
+}
+
+long Robot::getDist() {
+    return ultrasonicDistance_read(TRIGGER_PIN, ECHO_PIN);
+}
+
+void Robot::parceCommand() {
+    if(Serial.available() > 0)  {
+        // read the incoming:
+      String command[] = {"0", "0", "0"};
+      String incoming = Serial.readString();
+      Serial.println(incoming);
+      splitCommand(incoming, command); 
+      if (command[0] == "stop"){
+        this->stop();
+      }
+      else if (command[0] == "left"){
+        this->turnLeft();
+      }
+      else if (command[0] == "right"){
+        this->turnRight();
+      }
+      else if (command[0] == "forward"){
+        this->driveForward();
+      }
+      else if (command[0] == "backward"){
+        this->driveBackward();
+      }
+      else if (command[0] == "scan"){
+        this->scan();
+      }
+      else if (command[0] == "speed"){
+       char buf[command[1].length()+1];
+       command[1].toCharArray(buf, command[1].length()+1);
+       this->setSpeed(atoi(buf));
+      }
+      else if (command[0] == "turn"){
+       char buf[command[1].length()+1];
+       command[1].toCharArray(buf, command[1].length()+1);
+       this->turn(atoi(buf));
+      }
+      else if (command[0] == "cam_setX"){
+       char buf[command[1].length()+1];
+       command[1].toCharArray(buf, command[1].length()+1);
+       this->cam_setX(atoi(buf));
+      }
+      else if (command[0] == "cam_setY"){
+       char buf[command[1].length()+1];
+       command[1].toCharArray(buf, command[1].length()+1);
+       this->cam_setY(atoi(buf));
+      }
+      else if (command[0] == "dist"){
+         Serial.print("distance is: ");Serial.println(this->getDist());
+      }
+      else {
+        Serial.print("unknown data: ");Serial.println(incoming);
+      }
+      
+    Serial.flush(); 
+ }
 }
