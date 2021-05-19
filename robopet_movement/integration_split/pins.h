@@ -20,7 +20,10 @@
 #define MOTOR2_PIN1 4
 #define MOTOR2_PIN2 5
 #define ENB_PIN 10
-#define TRIGGER_PIN 8
-#define ECHO_PIN 7
+
+#define FRONT_TRIGGER_PIN 8
+#define FRONT_ECHO_PIN 7
+#define BACK_TRIGGER_PIN 13
+#define BACK_ECHO_PIN 12
 
 #endif //UNTITLED_PINS_H

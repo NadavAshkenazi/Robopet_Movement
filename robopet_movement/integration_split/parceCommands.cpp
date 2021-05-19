@@ -12,7 +12,7 @@ void splitCommand(String incoming, String* command){
 //        Serial.println(incoming[i]);
         if(incoming[i] == ' '){
             command[wordIndex] = temp;
-//            Serial.print("command is: ");Serial.println(command[wordIndex]);
+            Serial.print("command is: ");Serial.println(command[wordIndex]);
             temp = "";
             wordIndex+=1;
         }
@@ -20,7 +20,7 @@ void splitCommand(String incoming, String* command){
             temp = temp + incoming[i];
         }
     }
-    if (wordIndex < 3){
+    if (wordIndex < 4){
         command[wordIndex] = temp;
 //        Serial.print("command is: ");Serial.println(command[wordIndex]);
     }
@@ -28,7 +28,7 @@ void splitCommand(String incoming, String* command){
 }
 
 void flushCommand(String* command){
-    for (int i = 0; i<3; i++){
+    for (int i = 0; i<4; i++){
         command[i] = "0";
     }
 }

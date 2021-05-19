@@ -7,6 +7,28 @@
 #include "robopet_UltraSonic.h"
 #include "parceCommands.h"
 
+#define SEC 1000
+
+
+void Robot::motorsTurnLeftForward() {
+    motorL.motor_setSpeed(0);
+    motorR.motor_Forward();
+}
+
+void Robot::motorsTurnRightForward() {
+    motorL.motor_Forward();
+    motorR.motor_setSpeed(0);
+}
+
+void Robot::motorsTurnLeftBackward() {
+    motorL.motor_Backward();
+    motorR.motor_setSpeed(0);
+}
+
+void Robot::motorsTurnRightBackward() {
+    motorL.motor_setSpeed(0);
+    motorR.motor_Backward();
+}
 
 void Robot::setSpeed(int speed) {
     motorL.motor_setSpeed(speed);
@@ -35,33 +57,26 @@ void Robot::driveBackward() {
     Serial.println("=========================");
 }
 
-void Robot::turnLeft() {
-    Serial.println("=========================");
-    Serial.println("---> robot->turn_Left");
-    axis_turnLeft(pwm);
-    Serial.println("=========================");
-}
-
-void Robot::turnStraight() {
-    Serial.println("=========================");
-    Serial.println("---> robot->turn_Right");
-    axis_turnStraight(pwm);
-    Serial.println("=========================");
-}
-
-void Robot::turnRight() {
-    Serial.println("=========================");
-    Serial.println("---> robot->turn_Right");
-    axis_turnRight(pwm);
-    Serial.println("=========================");
-}
-
 void Robot::turn(int angle) {
     Serial.println("=========================");
     Serial.print("---> robot->turn "); Serial.println(angle);
     axis_turn(pwm, angle);
     Serial.println("=========================");
 }
+
+void Robot::turnLeft() {
+   this->turn(HARD_LEFT);
+}
+
+void Robot::turnStraight() {
+   this->turn(STRAIGHT);
+}
+
+void Robot::turnRight() {
+   this->turn(HARD_RIGHT);
+}
+
+
 
 void Robot::stop() {
     Serial.println("=========================");
@@ -94,14 +109,80 @@ void Robot::cam_setY(int angle) {
     Serial.println("=========================");
 }
 
-long Robot::getDist() {
-    return ultrasonicDistance_read(TRIGGER_PIN, ECHO_PIN);
+long Robot::getDist(int direction) {
+  if (direction == BACK)
+     return ultrasonicDistance_read(BACK_TRIGGER_PIN, BACK_ECHO_PIN);
+  else if (direction == FRONT)
+     return ultrasonicDistance_read(FRONT_TRIGGER_PIN, FRONT_ECHO_PIN);
 }
+
+
+void Robot::spinLeftBackward(int quarters){
+    int speed = this->getSpeed();
+    this->stop();
+    this->driveBackward();
+    this->setSpeed(255);
+    delay(100);
+    this->turnLeft();
+    this->motorsTurnLeftBackward();
+    delay(SEC*quarters);
+    this->setSpeed(speed);
+    this->turnStraight();
+}
+
+void Robot::spinLeftForward(int quarters){
+    int speed = this->getSpeed();
+    this->stop();
+    this->driveForward();
+    this->setSpeed(255);
+    delay(100);
+    this->turnLeft();
+    this->motorsTurnLeftForward();
+    delay(SEC*quarters);
+    this->setSpeed(speed);
+    this->turnStraight();
+}
+
+void Robot::spinRightBackward(int quarters){
+    int speed = this->getSpeed();
+    this->stop();
+    this->driveBackward();
+    this->setSpeed(255);
+    delay(100);
+    this->turnRight();
+    this->motorsTurnRightBackward();
+    delay(SEC*quarters);
+    this->setSpeed(speed);
+    this->turnStraight();
+}
+
+void Robot::spinRightForward(int quarters){
+    int speed = this->getSpeed();
+    this->stop();
+    this->driveForward();
+    this->setSpeed(255);
+    delay(100);
+    this->turnRight();
+    this->motorsTurnRightForward();
+    delay(SEC*quarters);
+    this->setSpeed(speed);
+    this->turnStraight();
+}
+
+
+
+
+
+
+
+
+
+
 
 void Robot::parceCommand() {
     if(Serial.available() > 0)  {
         // read the incoming:
-      String command[] = {"0", "0", "0"};
+      String command[] = {"0", "0", "0", "0"};
       String incoming = Serial.readString();
       Serial.println(incoming);
       splitCommand(incoming, command); 
@@ -110,9 +191,16 @@ void Robot::parceCommand() {
       }
       else if (command[0] == "left"){
         this->turnLeft();
+//        if (command[1] == "--hard")
+//          this->motorsLeft();
       }
       else if (command[0] == "right"){
         this->turnRight();
+//        if (command[1] == "--hard")
+//          this->motorsRight();
+      }
+      else if (command[0] == "straight"){
+        this->turnStraight();
       }
       else if (command[0] == "forward"){
         this->driveForward();
@@ -144,7 +232,12 @@ void Robot::parceCommand() {
        this->cam_setY(atoi(buf));
       }
       else if (command[0] == "dist"){
-         Serial.print("distance is: ");Serial.println(this->getDist());
+        if (command[1] == "--front"){
+          Serial.print("distance is: ");Serial.println(this->getDist(FRONT));
+        }
+        else if (command[1] == "--back"){
+          Serial.print("distance is: ");Serial.println(this->getDist(BACK));
+        }
       }
       else {
         Serial.print("unknown data: ");Serial.println(incoming);

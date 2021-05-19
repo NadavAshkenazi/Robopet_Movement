@@ -6,6 +6,7 @@
 #include <Adafruit_PWMServoDriver.h>
 #include "pins.h"
 #include "robot.h"
+#include "robopet_UltraSonic.h"
 
 
 #define WAIT 1000
@@ -42,29 +43,43 @@ void loop()
 {
 //  robot.setSpeed(200);
 //  delay(WAIT);
-  robot.driveForward();
-//  delay(WAIT);
 //  robot.turnLeft();
 //  delay(WAIT);
 //  robot.driveBackward();
 //  delay(WAIT);
 //  robot.turnRight();
 //  delay(WAIT);
-//  robot.driveForward();
+  robot.driveForward();
 //  robot.stop();
 //  delay(WAIT);
-  if(robot.getDist() <= 10){
-    Serial.print("distance is: ");Serial.println(robot.getDist());
-    int speed = robot.getSpeed();
-    robot.stop();
-    robot.driveBackward();
-    robot.setSpeed(speed);
-    delay(100);
-    robot.turnLeft();
-    delay(1000*3);
-    robot.turnStraight();
-  }
+//  if(robot.getDist(FRONT) <= 50){
+//    Serial.print("distance is: ");Serial.println(robot.getDist(FRONT));
+//    int speed = robot.getSpeed();
+//    robot.stop();
+//    robot.driveBackward();
+//    robot.setSpeed(255);
+//    delay(100);
+//    robot.turnLeft();
+//    robot.motorsTurnLeftBackward();
+//    delay(1000);
+//    robot.setSpeed(speed);
+//    robot.turnStraight();
+//  }
+//  if(robot.getDist(BACK) <= 50){
+//    Serial.print("distance is: ");Serial.println(robot.getDist(BACK));
+//    int speed = robot.getSpeed();
+//    robot.stop();
+//    robot.driveForward();
+//    robot.setSpeed(255);
+//    delay(100);
+//    robot.turnLeft();
+//    robot.motorsTurnLeftForward();
+//    delay(1000);
+//    robot.setSpeed(speed);
+//    robot.turnStraight();
+//  }
 //   robot.parceCommand();
+//   Serial.print("distance is: ");Serial.println(ultrasonicDistance_read(13, 12));
 }
 
 

@@ -10,11 +10,18 @@
 #include "camera.h"
 #include "pins.h"
 
+#define FRONT 0
+#define BACK 1
 
 class Robot {
-  public:
+  private:
     Motor motorL;
     Motor motorR;
+    void motorsTurnLeftForward();
+    void motorsTurnRightForward();
+    void motorsTurnLeftBackward();
+    void motorsTurnRightBackward();
+  public:
     Adafruit_PWMServoDriver pwm;
     Camera camera;
     Robot() : motorL(Motor(MOTOR1_PIN1, MOTOR1_PIN2, ENA_PIN, "Left")),
@@ -33,8 +40,12 @@ class Robot {
     void scan();
     void cam_setX(int angle);
     void cam_setY(int angle);
-    long getDist();
+    long getDist(int direction);
     void parceCommand();
+    void spinLeftBackward(int quarters);
+    void spinLeftForward(int quarters);
+    void spinRightBackward(int quarters);
+    void spinRightForward(int quarters);
 };
 
 #endif //UNTITLED_ROBOT_H

@@ -14,8 +14,9 @@
 
 //axis consts
 #define HARD_LEFT 60
-#define HARD_RIGHT 120
 #define STRAIGHT 90
+#define HARD_RIGHT 120
+
 
 
 void axis_turnRight(Adafruit_PWMServoDriver pwm);
