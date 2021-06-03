@@ -5,6 +5,7 @@
 #include "robot.h"
 #include "axis.h"
 #include "robopet_UltraSonic.h"
+#include "tail.h"
 #include "parceCommands.h"
 
 #define SEC 1000
@@ -40,28 +41,22 @@ int Robot::getSpeed() {
 }
 
 void Robot::driveForward() {
-    Serial.println("=========================");
     Serial.println("---> robot->drive_forwards");
 //    axis_turnStraight(pwm);
     motorL.motor_Forward();
     motorR.motor_Forward();
-    Serial.println("=========================");
 }
 
 void Robot::driveBackward() {
-    Serial.println("=========================");
     Serial.println("---> robot->drive_backwards");
 //    axis_turnStraight(pwm);
     motorL.motor_Backward();
     motorR.motor_Backward();
-    Serial.println("=========================");
 }
 
 void Robot::turn(int angle) {
-    Serial.println("=========================");
     Serial.print("---> robot->turn "); Serial.println(angle);
     axis_turn(pwm, angle);
-    Serial.println("=========================");
 }
 
 void Robot::turnLeft() {
@@ -79,34 +74,26 @@ void Robot::turnRight() {
 
 
 void Robot::stop() {
-    Serial.println("=========================");
     Serial.println("---> robot->stop");
     motorL.motor_setSpeed(0);
     motorR.motor_setSpeed(0);
     Serial.println("Robot stopped");
-    Serial.println("=========================");
 }
 
 void Robot::scan() {
  //    camera_scan(pwm);
-      Serial.println("=========================");
     Serial.println("---> robot->scan");
     camera.scan();
-    Serial.println("=========================");
 }
 
 void Robot::cam_setX(int angle) {
-    Serial.println("=========================");
     Serial.println("---> robot->cam_setX");
     camera.setAngleX(angle);
-    Serial.println("=========================");
 }
 
 void Robot::cam_setY(int angle) {
-    Serial.println("=========================");
     Serial.println("---> robot->cam_setX");
     camera.setAngleY(angle);
-    Serial.println("=========================");
 }
 
 long Robot::getDist(int direction) {
@@ -177,14 +164,76 @@ void Robot::spinRightForward(int quarters){
     this->turnStraight();
 }
 
-void Robot::parceCommand() {
-    if(Serial.available() > 0)  {
+void Robot::shakeTail(){
+      tail_shake(pwm);
+    }
+
+ void Robot::getState(){
+  if (this->state == "Idle"){
+    Serial.print("Robopet State: Idle");
+  }
+  else if (this->state == "Happy"){
+    Serial.print("Robopet State: Happy");
+  }
+  else if (this->state == "Friendly"){
+     Serial.print("Robopet State: Friendly");
+  }
+  else if (this->state == "Hostile"){
+     Serial.print("Robopet State: Hostile");
+  }
+  return this->state;
+ }
+ void Robot::setState(String state){
+    if (this->state == "Idle"){
+    Serial.print("Robopet State set to Idle");
+    }
+    else if (this->state == "Happy"){
+      Serial.print("Robopet State set to Happy");
+    }
+    else if (this->state == "Friendly"){
+       Serial.print("Robopet State set to Friendly");
+    }
+    else if (this->state == "Hostile"){
+       Serial.print("Robopet State set to Hostile");
+    }
+    else{
+      Serial.print("Undefined State");
+      return;
+    }
+  this->state = state;
+ }
+ 
+ void Robot::behave(){
+//  if (this->state == "Idle"){
+//    Serial.print("Robopet State: Idle");
+//  }
+  if (this->state == "Happy"){
+    this->shakeTail();
+  }
+  else if (this->state == "Friendly"){
+    this->shakeTail();
+  }
+//  else if (this->state == "Hostile"){
+//     Serial.print("Robopet State: Hostile");
+//  }
+ }
+
+void Robot::robopet_listen(){
+  if(Serial.available() > 0)  {
         // read the incoming:
-      String command[] = {"0", "0", "0", "0"};
       String incoming = Serial.readString();
       Serial.println(incoming);
-      splitCommand(incoming, command); 
-      if (command[0] == "stop"){
+      this->nextCommand = incoming;
+      Serial.flush(); 
+  }
+}
+void Robot::parceCommand() { 
+      String command[] = {"0", "0", "0", "0"};
+      splitCommand(this->nextCommand, command); 
+      if (command[0] == "Empty"){
+        return;
+      }
+      else if (command[0] == "stop"){
         this->stop();
       }
       else if (command[0] == "left"){
@@ -254,11 +303,28 @@ void Robot::parceCommand() {
              spinRightBackward(atoi(buf));
        }
       }
-      
-      else {
-        Serial.print("unknown data: ");Serial.println(incoming);
+      else if (command[0] == "shakeTail"){
+        this->shakeTail();
       }
-      
-    Serial.flush(); 
- }
+      else if (command[0] == "setState"){
+         if (command[1] == "Idle"){
+            this->setState("Idle");
+          }
+         else if (command[1] == "Happy"){
+            this->setState("Happy");
+          }
+         else if (command[1] == "Friendly"){
+            this->setState("Friendly");
+          }
+         else if (command[1] == "Hostile"){
+            this->setState("Hostile");
+          }
+        else if (command[1] == "--back"){
+          Serial.print("distance is: ");Serial.println(this->getDist(BACK));
+        }
+      }
+      else {
+        Serial.print("unknown data: ");Serial.println(this->nextCommand);
+      }
+      this->nextCommand = "Empty";
 }
