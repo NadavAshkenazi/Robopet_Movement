@@ -32,7 +32,7 @@ void tail_shake(Adafruit_PWMServoDriver pwm){
         tail_moveEnd(pwm, 90);
         delay(TAIL_DELAY);
     }
-    tail_moveEnd(pwm, 130);
+//    tail_moveEnd(pwm, 130);
 
 
 }

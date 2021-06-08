@@ -38,8 +38,8 @@ void setup()
   robot.turnStraight();
   robot.cam_setX(90);
   robot.cam_setY(45);
-  delay(WAIT);
-  Serial.println("Robopet ON");
+//  delay(WAIT);
+//  Serial.println("Robopet ON");
 
 
 }

@@ -231,9 +231,11 @@ void Robot::shakeTail(){
  }
  
  void Robot::behave(){
-//  if (this->state == "Idle"){
-//    Serial.print("Robopet State: Idle");
-//  }
+  if (this->state == "Idle"){
+//    if (this->isDebug == true)
+    if(false)
+      Serial.println("Robopet State: Idle");
+  }
   if (this->state == "Happy"){
     this->shakeTail();
   }
