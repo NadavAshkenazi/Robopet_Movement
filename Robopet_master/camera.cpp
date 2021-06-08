@@ -25,55 +25,50 @@
 //    
 //}
 
-void Camera::setAngleX(int angle){
+void Camera::setAngleX(int angle, bool debug=false){
   if (angle > MAX_X_ANGLE)
     angle = MAX_X_ANGLE;
   else if (angle < MIN_X_ANGLE)
     angle = MIN_X_ANGLE;
   angleX = angle;
   pwm.setPWM(cameraXPin, 0, servo_angleToPulse(angleX));
-  Serial.print("camera x set to ");Serial.println(angleX);
+  if (debug == true){ 
+    Serial.print("camera x set to ");Serial.println(angleX);
+  }
 }
 
-void Camera::getAngleX(){
+int Camera::getAngleX(){
   return angleX;
 }
 
-void Camera::setAngleY(int angle){
+void Camera::setAngleY(int angle, bool debug=false){
   if (angle > MAX_Y_ANGLE)
     angle = MAX_Y_ANGLE;
   else if (angle < MIN_Y_ANGLE)
     angle = MIN_Y_ANGLE;
   angleY = angle;
   pwm.setPWM(cameraYPin, 0, servo_angleToPulse(angleY));
-  Serial.print("camera y set to ");Serial.println(angleY);
+  if (debug == true){ 
+    Serial.print("camera y set to ");Serial.println(angleY);
+  }
 }
 
-void Camera::getAngleY(){
+int Camera::getAngleY(){
   return angleY;
 }
 
-void Camera::scan(){
-//    for( int x = MIN_X_ANGLE; x <= MAX_X_ANGLE; x +=CAMERA_STEP){
-//      delay(100);
-//      setAngleX(x);
-//      for( int y = MIN_Y_ANGLE; y <= MAX_Y_ANGLE; y +=CAMERA_STEP){
-//          delay(100);
-//          setAngleY(y);        
-//      }
-//    }
-//    delay(1000);
+void Camera::scan(bool debug=false){
     bool toBreak = false;
     for( int y = MIN_Y_ANGLE; y <= MAX_Y_ANGLE; y +=CAMERA_STEP){
       if (toBreak)
         break;
       delay(50);
-      setAngleY(y);
+      setAngleY(y, debug);
       for( int x = MIN_X_ANGLE; x <= MAX_X_ANGLE; x +=CAMERA_STEP){
         if (toBreak)
           break;
           delay(75);
-          setAngleX(x);
+          setAngleX(x, debug);
           if(Serial.available() > 0)  {
             // read the incoming:
              String incoming = Serial.readString();
@@ -93,7 +88,7 @@ void Camera::scan(){
           if (toBreak)
             break;
           delay(75);
-          setAngleX(x);
+          setAngleX(x, debug);
           if(Serial.available() > 0)  {
             // read the incoming:
              String incoming = Serial.readString();

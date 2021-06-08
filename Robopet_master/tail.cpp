@@ -23,14 +23,16 @@ void tail_moveEnd(Adafruit_PWMServoDriver pwm, int angle){
 
 void tail_shake(Adafruit_PWMServoDriver pwm){
     for (int i = 0; i <= 3; i++){
-        tail_moveStart(pwm, 80);
+        tail_moveStart(pwm, 60);
         delay(TAIL_DELAY);
-        tail_moveEnd(pwm, 110);
+        tail_moveEnd(pwm, 180);
         delay(TAIL_DELAY);
         tail_moveStart(pwm, 100);
         delay(TAIL_DELAY);
-        tail_moveEnd(pwm, 70);
+        tail_moveEnd(pwm, 90);
         delay(TAIL_DELAY);
     }
+    tail_moveEnd(pwm, 130);
+
 
 }

@@ -26,10 +26,10 @@ public:
         Camera(int cameraXPin, int cameraYPin, Adafruit_PWMServoDriver pwm) : cameraXPin(cameraXPin), cameraYPin(cameraYPin),
                 angleX(90), angleY(90), pwm(pwm) {};
 
-        void setAngleX(int angle);
-        void getAngleX();
-        void setAngleY(int angle);
-        void getAngleY();
-        void scan();
+        void setAngleX(int angle, bool debug=false);
+        int getAngleX();
+        void setAngleY(int angle, bool debug=false);
+        int getAngleY();
+        void scan(bool debug=false);
 };
 #endif //UNTITLED_CAMERA_H

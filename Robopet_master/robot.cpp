@@ -10,30 +10,29 @@
 
 #define SEC 1000
 
-
 void Robot::motorsTurnLeftForward() {
     motorL.motor_setSpeed(0);
-    motorR.motor_Forward();
+    motorR.motor_Forward(this->isDebug);
 }
 
 void Robot::motorsTurnRightForward() {
-    motorL.motor_Forward();
+    motorL.motor_Forward(this->isDebug);
     motorR.motor_setSpeed(0);
 }
 
 void Robot::motorsTurnLeftBackward() {
-    motorL.motor_Backward();
+    motorL.motor_Backward(this->isDebug);
     motorR.motor_setSpeed(0);
 }
 
 void Robot::motorsTurnRightBackward() {
     motorL.motor_setSpeed(0);
-    motorR.motor_Backward();
+    motorR.motor_Backward(this->isDebug);
 }
 
 void Robot::setSpeed(int speed) {
-    motorL.motor_setSpeed(speed);
-    motorR.motor_setSpeed(speed);
+    motorL.motor_setSpeed(speed, this->isDebug);
+    motorR.motor_setSpeed(speed, this->isDebug);
 }
 
 int Robot::getSpeed() {
@@ -41,22 +40,28 @@ int Robot::getSpeed() {
 }
 
 void Robot::driveForward() {
-    Serial.println("---> robot->drive_forwards");
+  if (this->isDebug == true){
+        Serial.println("---> robot->drive_forwards");
+  }
 //    axis_turnStraight(pwm);
-    motorL.motor_Forward();
-    motorR.motor_Forward();
+    motorL.motor_Forward(this->isDebug);
+    motorR.motor_Forward(this->isDebug);
 }
 
 void Robot::driveBackward() {
-    Serial.println("---> robot->drive_backwards");
+  if (this->isDebug == true){
+          Serial.println("---> robot->drive_backwards");
+  }
 //    axis_turnStraight(pwm);
-    motorL.motor_Backward();
-    motorR.motor_Backward();
+  motorL.motor_Backward(this->isDebug);
+  motorR.motor_Backward(this->isDebug);
 }
 
 void Robot::turn(int angle) {
-    Serial.print("---> robot->turn "); Serial.println(angle);
-    axis_turn(pwm, angle);
+  if (this->isDebug == true){
+      Serial.print("---> robot->turn "); Serial.println(angle);
+  }
+  axis_turn(pwm, angle, this->isDebug);
 }
 
 void Robot::turnLeft() {
@@ -74,26 +79,31 @@ void Robot::turnRight() {
 
 
 void Robot::stop() {
+  if (this->isDebug == true)
     Serial.println("---> robot->stop");
-    motorL.motor_setSpeed(0);
-    motorR.motor_setSpeed(0);
+  motorL.motor_setSpeed(0);
+  motorR.motor_setSpeed(0);
+  if (this->isDebug == true)
     Serial.println("Robot stopped");
 }
 
 void Robot::scan() {
  //    camera_scan(pwm);
+  if (this->isDebug == true)
     Serial.println("---> robot->scan");
-    camera.scan();
+  camera.scan(this->isDebug);
 }
 
 void Robot::cam_setX(int angle) {
+  if (this->isDebug == true)
     Serial.println("---> robot->cam_setX");
-    camera.setAngleX(angle);
+  camera.setAngleX(angle, this->isDebug);
 }
 
 void Robot::cam_setY(int angle) {
+  if (this->isDebug == true)  
     Serial.println("---> robot->cam_setX");
-    camera.setAngleY(angle);
+  camera.setAngleY(angle, this->isDebug);
 }
 
 long Robot::getDist(int direction) {
@@ -112,7 +122,9 @@ void Robot::spinLeftBackward(int quarters){
     delay(100);
     this->turnLeft();
     this->motorsTurnLeftBackward();
-    Serial.print("waiting "); Serial.println(SEC*quarters);
+    if (this->isDebug == true){
+            Serial.print("waiting "); Serial.println(SEC*quarters);
+    }
     delay(SEC*quarters);
     this->stop();
     this->setSpeed(speed);
@@ -127,7 +139,9 @@ void Robot::spinLeftForward(int quarters){
     delay(100);
     this->turnLeft();
     this->motorsTurnLeftForward();
-    Serial.print("waiting "); Serial.println(SEC*quarters);
+    if (this->isDebug == true){
+            Serial.print("waiting "); Serial.println(SEC*quarters);
+    }
     delay(SEC*quarters);
     this->stop();
     this->setSpeed(speed);
@@ -142,7 +156,9 @@ void Robot::spinRightBackward(int quarters){
     delay(100);
     this->turnRight();
     this->motorsTurnRightBackward();
-    Serial.print("waiting "); Serial.println(SEC*quarters);
+    if (this->isDebug == true){
+            Serial.print("waiting "); Serial.println(SEC*quarters);
+    }
     delay(SEC*quarters);
     this->stop();
     this->setSpeed(speed);
@@ -157,7 +173,9 @@ void Robot::spinRightForward(int quarters){
     delay(100);
     this->turnRight();
     this->motorsTurnRightForward();
-    Serial.print("waiting "); Serial.println(SEC*quarters);
+    if (this->isDebug == true){
+          Serial.print("waiting "); Serial.println(SEC*quarters);
+    }
     delay(SEC*quarters);
     this->stop();
     this->setSpeed(speed);
@@ -170,34 +188,43 @@ void Robot::shakeTail(){
 
  void Robot::getState(){
   if (this->state == "Idle"){
-    Serial.print("Robopet State: Idle");
+     if (this->isDebug == true)
+        Serial.print("Robopet State: Idle");
   }
   else if (this->state == "Happy"){
-    Serial.print("Robopet State: Happy");
+      if (this->isDebug == true)
+        Serial.print("Robopet State: Happy");
   }
   else if (this->state == "Friendly"){
-     Serial.print("Robopet State: Friendly");
+      if (this->isDebug == true)
+        Serial.print("Robopet State: Friendly");
   }
   else if (this->state == "Hostile"){
-     Serial.print("Robopet State: Hostile");
+      if (this->isDebug == true)
+        Serial.print("Robopet State: Hostile");
   }
   return this->state;
  }
  void Robot::setState(String state){
     if (state == "Idle"){
-    Serial.print("Robopet State set to Idle");
+        if (this->isDebug == true)
+          Serial.print("Robopet State set to Idle");
     }
     else if (state == "Happy"){
-      Serial.print("Robopet State set to Happy");
+        if (this->isDebug == true)
+          Serial.print("Robopet State set to Happy");
     }
     else if (state == "Friendly"){
-       Serial.print("Robopet State set to Friendly");
+        if (this->isDebug == true)
+          Serial.print("Robopet State set to Friendly");
     }
     else if (state == "Hostile"){
-       Serial.print("Robopet State set to Hostile");
+        if (this->isDebug == true)
+          Serial.print("Robopet State set to Hostile");
     }
     else{
-      Serial.print("Undefined State");
+        if (this->isDebug == true)
+          Serial.print("Undefined State");
       return;
     }
   this->state = state;
@@ -217,13 +244,23 @@ void Robot::shakeTail(){
 //     Serial.print("Robopet State: Hostile");
 //  }
  }
+
+void Robot::setDebugMode(bool isDebug){
+  this->isDebug = isDebug;
+  Serial.print("DEBUG "); Serial.println(this->isDebug);
+  
+}
+void Robot::getDebugMode(){
+  return this->isDebug;
+}
     
 void Robot::parceCommand() {
     if(Serial.available() > 0)  {
         // read the incoming:
       String command[] = {"0", "0", "0", "0"};
       String incoming = Serial.readString();
-      Serial.println(incoming);
+      if (this->isDebug == true)
+        Serial.println(incoming);
       splitCommand(incoming, command); 
       if (command[0] == "stop"){
         this->stop();
@@ -272,10 +309,14 @@ void Robot::parceCommand() {
       }
       else if (command[0] == "dist"){
         if (command[1] == "--front"){
-          Serial.print("distance is: ");Serial.println(this->getDist(FRONT));
+          if (this->isDebug == true)
+            Serial.print("distance is: ");
+          Serial.println(this->getDist(FRONT));
         }
         else if (command[1] == "--back"){
-          Serial.print("distance is: ");Serial.println(this->getDist(BACK));
+          if (this->isDebug == true)
+            Serial.print("distance is: ");
+          Serial.println(this->getDist(BACK));
         }
       }
      
@@ -311,12 +352,17 @@ void Robot::parceCommand() {
          else if (command[1] == "Hostile"){
             this->setState("Hostile");
           }
-        else if (command[1] == "--back"){
-          Serial.print("distance is: ");Serial.println(this->getDist(BACK));
-        }
+      }
+      else if (command[0] == "DEBUG"){
+         if (command[1] == "ON"){
+            this->setDebugMode(true);
+          }
+         else if (command[1] == "OFF"){
+            this->setDebugMode(false);
+            }
       }
       else {
-        Serial.print("unknown data: ");Serial.println(incoming);
+        Serial.println("unknown data: ");Serial.print(incoming);
       }
       
     Serial.flush(); 

@@ -36,8 +36,10 @@ void setup()
   //robot setup
   robot.setSpeed(150);
   robot.turnStraight();
+  robot.cam_setX(90);
+  robot.cam_setY(45);
   delay(WAIT);
-  Serial.print("Robopet ON");
+  Serial.println("Robopet ON");
 
 
 }
@@ -64,6 +66,7 @@ void loop()
 //    robot.spinLeftForward(2);
 //  }
    robot.parceCommand();
+   robot.behave();
 //   Serial.print("distance is: ");Serial.println(ultrasonicDistance_read(13, 12));
 //   robot.shakeTail();
 }

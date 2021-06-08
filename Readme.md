@@ -24,6 +24,8 @@
 * "cam_setY {int a}" - turn camera stand Y axis to to a
 * "dist (--front)/(--back)" - get the distance of the nearest object to front/back
 * "spin (--left)/(--right) (--front)/(--back) {int x}" - preform a spin of x quarters to the given direction in a given orientation 
+* "DEBUG ON/OFF - allow debug prints 
+
 
 #PINS
 

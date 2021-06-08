@@ -22,12 +22,13 @@ class Robot {
     void motorsTurnLeftBackward();
     void motorsTurnRightBackward();
     String state;
+    bool isDebug;
   public:
     Adafruit_PWMServoDriver pwm;
     Camera camera;
     Robot() : motorL(Motor(MOTOR1_PIN1, MOTOR1_PIN2, ENA_PIN, "Left")),
               motorR(Motor(MOTOR2_PIN1, MOTOR2_PIN2, ENB_PIN, "Right")),
-              pwm(Adafruit_PWMServoDriver()),camera(Camera(CAMERAX_PIN,CAMERAY_PIN, pwm)), state("Idle")  {};
+              pwm(Adafruit_PWMServoDriver()),camera(Camera(CAMERAX_PIN,CAMERAY_PIN, pwm)), state("Idle"), isDebug(false)  {};
 
     void setSpeed(int speed);
     int getSpeed();
@@ -51,6 +52,8 @@ class Robot {
     void setState(String state);
     void behave();
     void parceCommand();
+    void setDebugMode(bool isDebug);
+    void getDebugMode();
 };
 
 #endif //UNTITLED_ROBOT_H

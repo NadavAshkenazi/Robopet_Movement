@@ -21,10 +21,10 @@ public:
         Motor(int p1, int p2, int en, String name) : pin1(p1), pin2(p2),
         enable(en), motor_speed(0), name(name) {};
 
-        void motor_setSpeed(int speed);
+        void motor_setSpeed(int speed, bool debug=false);
         int motor_getSpeed();
-        void motor_Forward();
-        void motor_Backward();
+        void motor_Forward(bool debug=false);
+        void motor_Backward(bool debug=false);
 };
 
 

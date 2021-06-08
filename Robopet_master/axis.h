@@ -19,8 +19,8 @@
 
 
 
-void axis_turnRight(Adafruit_PWMServoDriver pwm);
-void axis_turnStraight(Adafruit_PWMServoDriver pwm);
-void axis_turnLeft(Adafruit_PWMServoDriver pwm);
-void axis_turn(Adafruit_PWMServoDriver pwm, int angle);
+void axis_turnRight(Adafruit_PWMServoDriver pwm, bool debug=false);
+void axis_turnStraight(Adafruit_PWMServoDriver pwm, bool debug=false);
+void axis_turnLeft(Adafruit_PWMServoDriver pwm, bool debug=false);
+void axis_turn(Adafruit_PWMServoDriver pwm, int angle, bool debug=false);
 #endif //UNTITLED_AXIS_H
