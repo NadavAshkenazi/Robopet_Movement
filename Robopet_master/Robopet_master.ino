@@ -20,7 +20,8 @@ Robot robot = Robot();
 void setup()
 {
   Serial.begin(9600); // opens serial port, sets data rate to 9600 bps
-  
+  Serial.flush(); 
+ 
   //PCA9685 setups
   robot.pwm.begin();
   robot.pwm.setPWMFreq(60);  // Analog servos run at ~60 Hz updates

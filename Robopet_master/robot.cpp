@@ -260,9 +260,9 @@ void Robot::parceCommand() {
     if(Serial.available() > 0)  {
         // read the incoming:
       String command[] = {"0", "0", "0", "0"};
-      String incoming = Serial.readString();
+      String incoming = Serial.readStringUntil('#');
       if (this->isDebug == true)
-        Serial.println(incoming);
+        Serial.print("COMMAND ------>");Serial.println(incoming);
       splitCommand(incoming, command); 
       if (command[0] == "stop"){
         this->stop();
@@ -364,9 +364,9 @@ void Robot::parceCommand() {
             }
       }
       else {
-        Serial.println("unknown data: ");Serial.print(incoming);
+        Serial.println("unknown data: ");Serial.println(incoming);
       }
-      
-    Serial.flush(); 
+      this->parceCommand();
+//    Serial.flush(); 
  }
 }

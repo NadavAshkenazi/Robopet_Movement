@@ -5,11 +5,13 @@
 #include "parceCommands.h"
 
 void splitCommand(String incoming, String* command){
-//    Serial.println("in split");
     String temp = "";
     int wordIndex = 0;
-    for (int i = 0; i< incoming.length(); i++){
-//        Serial.println(incoming[i]);
+    int i = 0;
+    while (incoming[i] == ' ' || incoming[i] == '\n'){
+      i++;
+    }
+    for (; i< incoming.length(); i++){
         if(incoming[i] == ' '){
             command[wordIndex] = temp;
 //            Serial.print("command is: ");Serial.println(command[wordIndex]);
