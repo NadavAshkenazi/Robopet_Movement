@@ -27,5 +27,8 @@
 #define FRONT_ECHO_PIN 7
 #define BACK_TRIGGER_PIN 13
 #define BACK_ECHO_PIN 12
+#define EYES_GREEN_PIN 15
+#define EYES_BLUE_PIN 16
+#define EYES_RED_PIN 17
 
 #endif //UNTITLED_PINS_H

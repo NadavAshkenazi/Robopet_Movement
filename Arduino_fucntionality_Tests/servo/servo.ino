@@ -60,6 +60,16 @@ void loop()
           servo_9.write(90);
           Serial.print('2');
           break;
+        case '3':
+          //hanle '2'
+          servo_9.write(180);
+          Serial.print('3');
+          break;
+        case '4':
+          //hanle '2'
+          servo_9.write(200);
+          Serial.print('4');
+          break;
 
         default:
         // handle unwanted input 

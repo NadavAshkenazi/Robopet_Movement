@@ -235,16 +235,29 @@ void Robot::shakeTail(){
 //    if (this->isDebug == true)
     if(false)
       Serial.println("Robopet State: Idle");
+    digitalWrite(EYES_GREEN_PIN, HIGH);
+    digitalWrite(EYES_BLUE_PIN, HIGH);
+    digitalWrite(EYES_RED_PIN, HIGH);
   }
   if (this->state == "Happy"){
+    digitalWrite(EYES_GREEN_PIN, LOW);
+    digitalWrite(EYES_BLUE_PIN, HIGH);
+    digitalWrite(EYES_RED_PIN, LOW);
     this->shakeTail();
   }
   else if (this->state == "Friendly"){
+    digitalWrite(EYES_GREEN_PIN, HIGH);
+    digitalWrite(EYES_BLUE_PIN, LOW);
+    digitalWrite(EYES_RED_PIN, LOW);
+
     this->shakeTail();
   }
-//  else if (this->state == "Hostile"){
+  else if (this->state == "Hostile"){
 //     Serial.print("Robopet State: Hostile");
-//  }
+    digitalWrite(EYES_GREEN_PIN, LOW);
+    digitalWrite(EYES_BLUE_PIN, LOW);
+    digitalWrite(EYES_RED_PIN, HIGH);
+  }
  }
 
 void Robot::setDebugMode(bool isDebug){

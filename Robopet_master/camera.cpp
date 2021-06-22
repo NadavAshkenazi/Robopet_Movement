@@ -6,9 +6,9 @@
 #include "camera.h"
 
 //camera consts
-#define MIN_X_ANGLE 20
+#define MIN_X_ANGLE 0
 #define MAX_X_ANGLE 180
-#define MIN_Y_ANGLE 20
+#define MIN_Y_ANGLE 0
 #define MAX_Y_ANGLE 90
 #define CAMERA_STEP 10
 
@@ -62,7 +62,7 @@ void Camera::scan(bool debug=false){
     for( int y = MIN_Y_ANGLE; y <= MAX_Y_ANGLE; y +=CAMERA_STEP){
       if (toBreak)
         break;
-      delay(50);
+      delay(500);
       setAngleY(y, debug);
       for( int x = MIN_X_ANGLE; x <= MAX_X_ANGLE; x +=CAMERA_STEP){
         if (toBreak)
@@ -87,7 +87,7 @@ void Camera::scan(bool debug=false){
       for( int x = MAX_X_ANGLE; x >= MIN_X_ANGLE; x -=CAMERA_STEP){
           if (toBreak)
             break;
-          delay(75);
+          delay(100);
           setAngleX(x, debug);
           if(Serial.available() > 0)  {
             // read the incoming:
