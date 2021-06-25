@@ -10,6 +10,11 @@
 
 #define SEC 1000
 
+void Robot::robotSetup(){
+   this->camera.CameraSetup();
+}
+
+
 void Robot::motorsTurnLeftForward() {
     motorL.motor_setSpeed(0);
     motorR.motor_Forward(this->isDebug);
@@ -102,8 +107,13 @@ void Robot::cam_setX(int angle) {
 
 void Robot::cam_setY(int angle) {
   if (this->isDebug == true)  
-    Serial.println("---> robot->cam_setX");
+    Serial.println("---> robot->cam_setY");
   camera.setAngleY(angle, this->isDebug);
+}
+
+
+void Robot::mouthSetAngle(int angle){
+  this->camera.mouthSetAngle(angle, this-isDebug);
 }
 
 long Robot::getDist(int direction) {
@@ -375,6 +385,19 @@ void Robot::parceCommand() {
          else if (command[1] == "OFF"){
             this->setDebugMode(false);
             }
+      }
+      else if (command[0] == "mouth"){        
+       char buf[command[2].length()+1];
+       command[2].toCharArray(buf, command[2].length()+1);  
+       if (command[1] == "open"){
+          this->mouthSetAngle(100);
+       }
+       else if (command[1] == "close"){
+          this->mouthSetAngle(60);
+       }
+       else if (command[1] == "manual"){
+          this->mouthSetAngle(atoi(buf));
+       } 
       }
       else {
         Serial.println("unknown data: ");Serial.println(incoming);

@@ -4,6 +4,7 @@
 
 /* ========= Camera functcions Functions ========== */
 #include "camera.h"
+#include "pins.h"
 
 //camera consts
 #define MIN_X_ANGLE 0
@@ -25,13 +26,26 @@
 //    
 //}
 
+
+void Camera::CameraSetup(){
+  this->servo_headX.attach(CAMERAX_PIN, 500, 2500);
+//  this->servo_headX.write(20);
+//  delay(1000);
+//  this->servo_headX.write(100);
+  this->servo_headY.attach(CAMERAY_PIN, 500, 2500);
+//  this->servo_headY.write(20);
+//  delay(1000);
+//  this->servo_headY.write(90);
+}
+
 void Camera::setAngleX(int angle, bool debug=false){
   if (angle > MAX_X_ANGLE)
     angle = MAX_X_ANGLE;
   else if (angle < MIN_X_ANGLE)
     angle = MIN_X_ANGLE;
   angleX = angle;
-  pwm.setPWM(cameraXPin, 0, servo_angleToPulse(angleX));
+  this->servo_headX.write(angleX);
+//  pwm.setPWM(cameraXPin, 0, servo_angleToPulse(angleX));
   if (debug == true){ 
     Serial.print("camera x set to ");Serial.println(angleX);
   }
@@ -47,7 +61,8 @@ void Camera::setAngleY(int angle, bool debug=false){
   else if (angle < MIN_Y_ANGLE)
     angle = MIN_Y_ANGLE;
   angleY = angle;
-  pwm.setPWM(cameraYPin, 0, servo_angleToPulse(angleY));
+//  pwm.setPWM(cameraYPin, 0, servo_angleToPulse(angleY));
+  this->servo_headY.write(angleY);
   if (debug == true){ 
     Serial.print("camera y set to ");Serial.println(angleY);
   }
@@ -101,4 +116,12 @@ void Camera::scan(bool debug=false){
       }
     }
     delay(1000);
+}
+
+
+void Camera:: mouthSetAngle(int angle, bool debug=false){
+    pwm.setPWM(MOUTH_PIN, 0, servo_angleToPulse(angle));
+  if (debug == true){ 
+    Serial.print("mouth set to ");Serial.println(angle);
+  }
 }

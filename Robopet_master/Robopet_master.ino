@@ -12,7 +12,6 @@
 #define WAIT 1000
 
 
-
 Robot robot = Robot();
 
 
@@ -34,7 +33,10 @@ void setup()
   pinMode(ENA_PIN, OUTPUT); 
   pinMode(ENB_PIN, OUTPUT);
 
+
+
   //robot setup
+  robot.robotSetup();
   robot.setSpeed(150);
   robot.turnStraight();
   robot.cam_setX(90);
@@ -46,6 +48,23 @@ void setup()
 }
 void loop()
 {
+//  analogWrite(9, 200); //ENA pin
+//  analogWrite(10, 200); //ENB pin
+//    //Controlling spin direction of motors:
+//  digitalWrite(2, HIGH);
+//  digitalWrite(3, LOW);
+//
+//  digitalWrite(4, HIGH);
+//  digitalWrite(5, LOW);
+//  delay(1000);
+//
+//  digitalWrite(2, LOW);
+//  digitalWrite(3, HIGH);
+//
+//  digitalWrite(4, LOW);
+//  digitalWrite(5, HIGH);
+//  delay(1000);
+
 //  robot.setSpeed(200);
 //  delay(WAIT);
 //  robot.turnLeft();

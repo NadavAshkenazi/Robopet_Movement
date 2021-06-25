@@ -21,6 +21,9 @@ int Motor::motor_getSpeed() {
 void Motor::motor_Forward(bool debug=false) {
     digitalWrite(pin1, HIGH);
     digitalWrite(pin2, LOW);
+    Serial.print(pin1);Serial.println(" - > pin 1");
+    Serial.print(pin2);Serial.println(" - > pin 2");
+
     if (debug == true){ 
           Serial.print(name);Serial.println(" motor forward");
     }
