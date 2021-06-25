@@ -50,6 +50,8 @@ class Robot {
     void spinRightBackward(int quarters);
     void spinRightForward(int quarters);
     void shakeTail();
+    void tailSetStart(int angle);
+    void tailSetEnd(int angle);
     void getState();
     void setState(String state);
     void behave();

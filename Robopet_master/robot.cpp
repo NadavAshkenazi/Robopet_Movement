@@ -137,7 +137,7 @@ void Robot::spinLeftBackward(int quarters){
     }
     delay(SEC*quarters);
     this->stop();
-    this->setSpeed(speed);
+//    this->setSpeed(speed);
     this->turnStraight();
 }
 
@@ -154,7 +154,7 @@ void Robot::spinLeftForward(int quarters){
     }
     delay(SEC*quarters);
     this->stop();
-    this->setSpeed(speed);
+//    this->setSpeed(speed);
     this->turnStraight();
 }
 
@@ -171,7 +171,7 @@ void Robot::spinRightBackward(int quarters){
     }
     delay(SEC*quarters);
     this->stop();
-    this->setSpeed(speed);
+//    this->setSpeed(speed);
     this->turnStraight();
 }
 
@@ -188,13 +188,21 @@ void Robot::spinRightForward(int quarters){
     }
     delay(SEC*quarters);
     this->stop();
-    this->setSpeed(speed);
+//    this->setSpeed(speed);
     this->turnStraight();
 }
 
 void Robot::shakeTail(){
-      tail_shake(pwm);
-    }
+  tail_shake(pwm);
+}
+
+void Robot::tailSetStart(int angle){
+  tail_moveStart(pwm, angle);
+}
+void Robot::tailSetEnd(int angle){
+  tail_moveEnd(pwm, angle);
+}
+
 
  void Robot::getState(){
   if (this->state == "Idle"){
@@ -364,6 +372,16 @@ void Robot::parceCommand() {
       else if (command[0] == "shakeTail"){
         this->shakeTail();
       }
+      else if(command[0] == "tail"){
+        char buf[command[2].length()+1];
+        command[2].toCharArray(buf, command[2].length()+1);  
+        if (command[1] == "--start"){
+            this->tailSetStart(atoi(buf));
+          }
+        if (command[1] == "--end"){
+            this->tailSetEnd(atoi(buf));
+          }
+      }
       else if (command[0] == "setState"){
          if (command[1] == "Idle"){
             this->setState("Idle");
@@ -399,6 +417,7 @@ void Robot::parceCommand() {
           this->mouthSetAngle(atoi(buf));
        } 
       }
+
       else {
         Serial.println("unknown data: ");Serial.println(incoming);
       }
