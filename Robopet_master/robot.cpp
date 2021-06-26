@@ -10,8 +10,21 @@
 
 #define SEC 1000
 
+#define RED 1
+#define GREEN 2
+#define BLUE 3
+#define ALL 4
+#define NONE 5
+
 void Robot::robotSetup(){
    this->camera.CameraSetup();
+   this->setSpeed(150);
+   this->turnStraight();
+   this->cam_setX(90);
+   this->cam_setY(45);
+   this->tailSetStart(90);
+   this->tailSetEnd(120);
+   this->setEyes(ALL);
 }
 
 
@@ -286,7 +299,43 @@ void Robot::setDebugMode(bool isDebug){
 void Robot::getDebugMode(){
   return this->isDebug;
 }
-    
+
+void Robot::setEyes(int mode){
+  
+  switch(mode){
+    case RED:
+            digitalWrite(EYES_GREEN_PIN, LOW);
+            digitalWrite(EYES_BLUE_PIN, LOW);
+            digitalWrite(EYES_RED_PIN, HIGH);
+            break;
+    case GREEN:
+            digitalWrite(EYES_GREEN_PIN, HIGH);
+            digitalWrite(EYES_BLUE_PIN, LOW);
+            digitalWrite(EYES_RED_PIN, LOW);    
+            break;
+    case BLUE:
+            digitalWrite(EYES_GREEN_PIN, LOW);
+            digitalWrite(EYES_BLUE_PIN, HIGH);
+            digitalWrite(EYES_RED_PIN, LOW);  
+            break;
+    case ALL:
+            digitalWrite(EYES_GREEN_PIN, HIGH);
+            digitalWrite(EYES_BLUE_PIN, HIGH);
+            digitalWrite(EYES_RED_PIN, HIGH);   
+            break;
+    case NONE:
+            digitalWrite(EYES_GREEN_PIN, LOW);
+            digitalWrite(EYES_BLUE_PIN, LOW);
+            digitalWrite(EYES_RED_PIN, LOW);   
+            break;
+    default:
+            digitalWrite(EYES_GREEN_PIN, LOW);
+            digitalWrite(EYES_BLUE_PIN, LOW);
+            digitalWrite(EYES_RED_PIN, LOW);   
+            break;
+  }
+}
+
 void Robot::parceCommand() {
     if(Serial.available() > 0)  {
         // read the incoming:
@@ -416,6 +465,21 @@ void Robot::parceCommand() {
        else if (command[1] == "manual"){
           this->mouthSetAngle(atoi(buf));
        } 
+      }
+
+       else if (command[0] == "eyes"){
+        int mode = 0;        
+         if (command[1] == "red")
+            mode = RED;
+         else if (command[1] == "green")
+            mode = GREEN;     
+         else if (command[1] == "blue")
+            mode = BLUE;     
+         else if (command[1] == "all")
+            mode = ALL;
+         else if (command[1] == "none")
+            mode = NONE;
+         this->setEyes(mode);
       }
 
       else {

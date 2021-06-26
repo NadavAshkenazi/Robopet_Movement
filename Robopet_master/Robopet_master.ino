@@ -37,12 +37,7 @@ void setup()
 
   //robot setup
   robot.robotSetup();
-  robot.setSpeed(150);
-  robot.turnStraight();
-  robot.cam_setX(90);
-  robot.cam_setY(45);
-  robot.tailSetStart(90);
-  robot.tailSetEnd(120);
+
 
   
 //  delay(WAIT);
@@ -90,7 +85,7 @@ void loop()
 //    robot.spinLeftForward(2);
 //  }
    robot.parceCommand();
-   robot.behave();
+//   robot.behave();
 //   Serial.print("distance is: ");Serial.println(ultrasonicDistance_read(13, 12));
 //   robot.shakeTail();
 }

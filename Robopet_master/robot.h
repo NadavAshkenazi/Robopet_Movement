@@ -58,6 +58,7 @@ class Robot {
     void parceCommand();
     void setDebugMode(bool isDebug);
     void getDebugMode();
+    void setEyes(int mode);
 };
 
 #endif //UNTITLED_ROBOT_H
