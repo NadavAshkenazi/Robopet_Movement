@@ -27,11 +27,11 @@ void splitCommand(String incoming, String* command){
 //        Serial.print("command is: ");Serial.println(command[wordIndex]);
     }
     temp = "";
-    Serial.println("full command is: ");
-    Serial.println(command[0]);
-    Serial.println(command[1]);
-    Serial.println(command[2]);
-    Serial.println(command[3]);
+//    Serial.println("full command is: ");
+//    Serial.println(command[0]);
+//    Serial.println(command[1]);
+//    Serial.println(command[2]);
+//    Serial.println(command[3]);
 }
 
 void flushCommand(String* command){
