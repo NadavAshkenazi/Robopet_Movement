@@ -24,12 +24,13 @@ class Robot {
     void motorsTurnRightBackward();
     String state;
     bool isDebug;
+    int robotSpeed;
   public:
     Adafruit_PWMServoDriver pwm;
     Camera camera;
     Robot() : motorL(Motor(MOTOR1_PIN1, MOTOR1_PIN2, ENA_PIN, "Left")),
               motorR(Motor(MOTOR2_PIN1, MOTOR2_PIN2, ENB_PIN, "Right")),
-              pwm(Adafruit_PWMServoDriver()),camera(Camera(pwm)), state("Idle"), isDebug(false)  {};
+              pwm(Adafruit_PWMServoDriver()),camera(Camera(pwm)), state("Idle"), isDebug(false), robotSpeed(0) {};
     void robotSetup();
     void setSpeed(int speed);
     int getSpeed();

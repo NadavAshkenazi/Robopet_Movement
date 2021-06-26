@@ -24,10 +24,10 @@
 #define ENB_PIN 11
 #define CAMERAX_PIN 9
 #define CAMERAY_PIN 10
-#define FRONT_TRIGGER_PIN 7
-#define FRONT_ECHO_PIN 6
-#define BACK_TRIGGER_PIN 13
-#define BACK_ECHO_PIN 12
+// #define FRONT_TRIGGER_PIN 7
+// #define FRONT_ECHO_PIN 6
+#define FRONT_TRIGGER_PIN 13
+#define FRONT_ECHO_PIN 12
 #define EYES_GREEN_PIN 15
 #define EYES_BLUE_PIN 16
 #define EYES_RED_PIN 17

@@ -52,10 +52,11 @@ void Robot::motorsTurnRightBackward() {
 void Robot::setSpeed(int speed) {
     motorL.motor_setSpeed(speed, this->isDebug);
     motorR.motor_setSpeed(speed, this->isDebug);
+    this->robotSpeed = speed;
 }
 
 int Robot::getSpeed() {
-    return MAX(motorL.motor_getSpeed(), motorR.motor_getSpeed());
+    return this->robotSpeed;
 }
 
 void Robot::driveForward() {
@@ -63,6 +64,7 @@ void Robot::driveForward() {
         Serial.println("---> robot->drive_forwards");
   }
 //    axis_turnStraight(pwm);
+    this->setSpeed(this->robotSpeed);
     motorL.motor_Forward(this->isDebug);
     motorR.motor_Forward(this->isDebug);
 }
@@ -72,6 +74,7 @@ void Robot::driveBackward() {
           Serial.println("---> robot->drive_backwards");
   }
 //    axis_turnStraight(pwm);
+  this->setSpeed(this->robotSpeed);
   motorL.motor_Backward(this->isDebug);
   motorR.motor_Backward(this->isDebug);
 }
@@ -132,7 +135,7 @@ void Robot::mouthSetAngle(int angle){
 
 long Robot::getDist(int direction) {
   if (direction == BACK)
-     return ultrasonicDistance_read(BACK_TRIGGER_PIN, BACK_ECHO_PIN);
+     return ultrasonicDistance_read(6, 7);
   else if (direction == FRONT)
      return ultrasonicDistance_read(FRONT_TRIGGER_PIN, FRONT_ECHO_PIN);
 }
