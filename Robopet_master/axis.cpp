@@ -35,7 +35,12 @@ void axis_turn(Adafruit_PWMServoDriver pwm, int angle, bool debug=false){
       angle = HARD_RIGHT;
       Serial.print("Invalid angle, setting to ");Serial.println(HARD_RIGHT);
     }
+//    pwm.setPWM(AXIS_PIN, 4096,0);
+//    delay(1000);
     pwm.setPWM(AXIS_PIN, 0, servo_angleToPulse(angle));
+//    delay(1000);
+//    pwm.setPWM(AXIS_PIN, 0,4096);
+//    delay(500);
     if (debug == true){
       Serial.print("Axis set to ");Serial.println(angle);
     }

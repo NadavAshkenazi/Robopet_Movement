@@ -25,6 +25,7 @@ void Robot::robotSetup(){
    this->tailSetStart(90);
    this->tailSetEnd(120);
    this->setEyes(ALL);
+   this->mouthSetAngle(60);
 }
 
 
@@ -126,7 +127,7 @@ void Robot::cam_setY(int angle) {
 
 
 void Robot::mouthSetAngle(int angle){
-  this->camera.mouthSetAngle(angle, this-isDebug);
+  this->camera.mouthSetAngle(angle, this->isDebug);
 }
 
 long Robot::getDist(int direction) {
@@ -155,12 +156,13 @@ void Robot::spinLeftBackward(int quarters){
 }
 
 void Robot::spinLeftForward(int quarters){
+    this->turnLeft();
+    delay(1000);
     int speed = this->getSpeed();
     this->stop();
     this->driveForward();
     this->setSpeed(255);
     delay(100);
-    this->turnLeft();
     this->motorsTurnLeftForward();
     if (this->isDebug == true){
             Serial.print("waiting "); Serial.println(SEC*quarters);
@@ -480,6 +482,20 @@ void Robot::parceCommand() {
          else if (command[1] == "none")
             mode = NONE;
          this->setEyes(mode);
+      }
+      else if (command[0] == "turnAround"){
+//        this->mouthSetAngle(100);
+        this->cam_setX(170);
+        this->tailSetStart(60);
+        this->tailSetEnd(10);
+        this->turn(90);
+        this->turn(60);
+        delay(1000);
+//        this->spinLeftForward(12);
+//        this->mouthSetAngle(60);
+        this->cam_setX(90);
+        this->tailSetStart(90);
+        this->tailSetEnd(120);
       }
 
       else {
